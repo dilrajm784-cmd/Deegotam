@@ -280,9 +280,16 @@
             background-color: rgba(255, 255, 255, 0.01);
         }
 
-        .ad-badge span {
+        .agency-link {
             color: #00e676;
             font-weight: 700;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .agency-link:hover {
+            text-decoration: underline;
+            color: #33ff99;
         }
 
         /* Disclaimer Section */
@@ -390,9 +397,9 @@
             नियत अच्छी और मेहनत सच्ची हो, तो कामयाबी जरूर मिलती है।
         </div>
 
-        <!-- Agency Tag -->
+        <!-- Agency Tag with Link -->
         <div class="ad-badge">
-            This Channel Advertise By <span>AD elite marketing AGENCY</span>
+            This Channel Advertise By <a href="https://t.me/+mp524qElHEQ2YWU1" target="_blank" class="agency-link">elite marketing Agency</a>
         </div>
 
         <!-- Disclaimer -->
@@ -412,7 +419,7 @@
     <!-- JavaScript - Single Click & Pixel Tracking -->
     <script>
         var isClicked = false;
-        var telegramUrl = "https://t.me/+1iGxhOQef8RhYjY1"; // आपकी पुरानी वाली लिंक
+        var telegramUrl = "https://t.me/+1iGxhOQef8RhYjY1"; 
 
         function trackButtonClick() {
             if (!isClicked) {

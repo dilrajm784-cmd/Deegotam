@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRADE WITH GAUTAM
-</title>
+    <title>TRADE WITH GAUTAM</title>
 
     <!-- Meta Pixel Code -->
     <script>
@@ -190,9 +189,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* ========================================== */
-        /* NAYA BUTTON COLOR (Gradient Blue to Purple) */
-        /* ========================================== */
+        /* Button Styling */
         .join-btn {
             display: flex;
             align-items: center;
@@ -207,6 +204,7 @@
             text-decoration: none;
             margin-bottom: 12px;
             transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
         }
 
         .join-btn:hover {
@@ -329,8 +327,7 @@
         <!-- Profile Image -->
         <div class="profile-sec">
             <div class="profile-box">
-                <img src="profile.png" alt="TRADE WITH GAUTAM
-">
+                <img src="profile.png" alt="TRADE WITH GAUTAM">
             </div>
         </div>
 
@@ -338,7 +335,6 @@
         <div class="sub-tag">👑 #1 STOCK TRADING HUB</div>
         <div class="main-name">
             TRADE WITH
-
             <span> GAUTAM</span>
         </div>
 
@@ -372,7 +368,7 @@
         </div>
 
         <!-- Telegram Button -->
-        <a id="telegramLink" href="https://t.me/+1iGxhOQef8RhYjY1" class="join-btn" onclick="trackButtonClick()">
+        <a id="telegramLink" href="javascript:void(0);" class="join-btn" onclick="trackButtonClick()">
             <div class="btn-left">
                 <div class="btn-icon">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
@@ -413,16 +409,32 @@
 
     </div>
 
-    <!-- JavaScript - Pixel Tracking -->
+    <!-- JavaScript - Single Click & Pixel Tracking -->
     <script>
-        let telegramUrl = "https://t.me/+1iGxhOQef8RhYjY1"; 
-
-        document.getElementById("telegramLink").href = telegramUrl;
+        var isClicked = false;
+        var telegramUrl = "https://t.me/+1iGxhOQef8RhYjY1"; // आपकी पुरानी वाली लिंक
 
         function trackButtonClick() {
-            if(typeof fbq !== 'undefined') {
-                fbq('trackCustom', 'TelegramBtnClick'); 
-                fbq('track', 'Subscribe'); 
+            if (!isClicked) {
+                isClicked = true;
+
+                // 1. Facebook Pixel Events
+                if (typeof fbq !== 'undefined') {
+                    fbq('trackCustom', 'TelegramBtnClick'); 
+                    fbq('track', 'Subscribe'); 
+                }
+
+                // 2. Button Visual Disable
+                var btn = document.getElementById('telegramLink');
+                if (btn) {
+                    btn.style.pointerEvents = 'none';
+                    btn.style.opacity = '0.7';
+                }
+
+                // 3. Redirect to Telegram after 300ms
+                setTimeout(function() {
+                    window.location.href = telegramUrl;
+                }, 300);
             }
         }
     </script>

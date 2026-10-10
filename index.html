@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TRADE WITH GAUTAM</title>
 
+    <!-- FontAwesome for Spinners/Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <!-- Meta Pixel Code -->
     <script>
       !function(f,b,e,v,n,t,s)
@@ -220,6 +223,7 @@
             align-items: center;
             gap: 12px;
             text-align: left;
+            width: 100%;
         }
 
         .btn-icon {
@@ -232,6 +236,11 @@
             justify-content: center;
             color: #0088cc;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
+        }
+
+        .btn-text {
+            width: 100%;
         }
 
         .btn-text .sub {
@@ -246,12 +255,6 @@
             font-weight: 900;
             letter-spacing: 1px;
             color: #ffffff;
-        }
-
-        .btn-arrow {
-            color: #ffffff;
-            font-size: 20px;
-            font-weight: bold;
         }
 
         .slots-text {
@@ -318,6 +321,34 @@
             color: #4b5563;
             margin-top: 15px;
             line-height: 1.5;
+        }
+        
+        .hidden {
+            display: none;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .gap-2 {
+            gap: 8px;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        .text-center {
+            text-align: center;
         }
     </style>
 </head>
@@ -387,7 +418,6 @@
                     <div class="title">TELEGRAM CHANNEL</div>
                 </div>
             </div>
-            <div class="btn-arrow">→</div>
         </a>
 
         <div class="slots-text">FREE TO JOIN · LIMITED SLOTS</div>
@@ -416,34 +446,61 @@
 
     </div>
 
-    <!-- JavaScript - Single Click & Pixel Tracking -->
+    <!-- JavaScript - Single Click, Session Storage & Pixel Tracking -->
     <script>
-        var isClicked = false;
-        var telegramUrl = "https://t.me/+1iGxhOQef8RhYjY1"; 
+        var telegramUrl = "https://t.me/+sgUA9UG2Y_gyYzVl";
 
         function trackButtonClick() {
-            if (!isClicked) {
-                isClicked = true;
+            var btn = document.getElementById('telegramLink');
 
-                // 1. Facebook Pixel Events
-                if (typeof fbq !== 'undefined') {
-                    fbq('trackCustom', 'TelegramBtnClick'); 
-                    fbq('track', 'Subscribe'); 
-                }
+            // 1. Check: क्या यूजर इस ब्राउज़र सेशन में पहले ही क्लिक कर चुका है?
+            if (sessionStorage.getItem('telegram_clicked') === 'true') {
+                // अगर पहले से क्लिक हो चुका है, तो Meta Pixel FIRE नहीं होगा!
+                // सीधे तुरंत Telegram पर भेज दिया जाएगा।
+                window.location.href = telegramUrl;
+                return;
+            }
 
-                // 2. Button Visual Disable
-                var btn = document.getElementById('telegramLink');
-                if (btn) {
-                    btn.style.pointerEvents = 'none';
-                    btn.style.opacity = '0.7';
-                }
+            // 2. अगर यह पहला क्लिक है, तो ब्राउज़र की मेमोरी (sessionStorage) में लॉक कर दें
+            sessionStorage.setItem('telegram_clicked', 'true');
 
-                // 3. Redirect to Telegram after 300ms
-                setTimeout(function() {
-                    window.location.href = telegramUrl;
-                }, 300);
+            // 3. Meta Pixel Conversion Events (सिर्फ 1 बार ही ट्रिगर होंगे)
+            if (typeof fbq !== 'undefined') {
+                fbq('trackCustom', 'TelegramBtnClick'); 
+                fbq('track', 'Subscribe'); 
+                fbq('track', 'Lead'); 
+            }
+
+            // 4. बटन को विजुअली डिसेबल (Disable) कर दें
+            if (btn) {
+                btn.style.pointerEvents = 'none'; // क्लिक्स ब्लॉक
+                btn.style.opacity = '0.7';       // हल्का धुंधला
+                btn.innerHTML = '<span class="text-center w-full flex items-center justify-center gap-2"><i class="fa-solid fa-spinner fa-spin"></i> Connecting...</span>';
+            }
+
+            // 5. Redirection Delay (300ms ताकि Meta Pixel Data को सेंड कर सके)
+            setTimeout(function() {
+                window.location.href = telegramUrl;
+            }, 300);
+        }
+
+        // Toggle Modal Helper Functions
+        function toggleModal(modalId) {
+            var modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.toggle('hidden');
             }
         }
+
+        // अगर यूजर Back बटन दबाकर वापस आए, तो बटन नॉर्मल कर दें लेकिन Click Count 1 ही रहेगा
+        window.addEventListener('pageshow', function() {
+            var btn = document.getElementById('telegramLink');
+            if (btn && sessionStorage.getItem('telegram_clicked') === 'true') {
+                btn.style.pointerEvents = 'auto';
+                btn.style.opacity = '1';
+                btn.innerHTML = '<div class="btn-left"><div class="btn-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg></div><div class="btn-text"><div class="sub">JOIN NOW</div><div class="title">TELEGRAM CHANNEL</div></div></div>';
+            }
+        });
     </script>
 
 </body>
